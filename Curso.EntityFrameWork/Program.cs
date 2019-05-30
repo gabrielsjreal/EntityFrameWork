@@ -23,19 +23,19 @@ namespace Curso.EntityFrameWork
             p.Categoria = "Filmes";
             p.Preco = 74.90;
 
-            var contexto = new LojaContext();
+            var contexto = new ProdutoDAOEntity();
             
-                contexto.Produtos.Add(p);
-                contexto.SaveChanges();
+                contexto.Adicionar(p);
+              
             
         }
         
         //método para exibir os produtos que estão no banco de dados
         private static void ExibirProdutos()
         {
-            var banco = new LojaContext();
+            var banco = new ProdutoDAOEntity();
 
-                IList<Produto> produtos = banco.Produtos.ToList();
+                IList<Produto> produtos = banco.ExibirProdutos();
 
             if (produtos.Count != 0)
             {
@@ -55,13 +55,13 @@ namespace Curso.EntityFrameWork
         // método para excluir todos os elementos do banco de dados
         private static void ExcluirProdutos()
         {
-            var banco = new LojaContext();
-            IList<Produto> produtos = banco.Produtos.ToList();
+            var banco = new ProdutoDAOEntity();
+            var produtos = banco.ExibirProdutos();
             foreach (var item in produtos)
             {
-                banco.Produtos.Remove(item);
+                banco.Remover(item);
             }
-            banco.SaveChanges();
+            
         }
 
         //método para atualizar os elementos do banco de dados
@@ -74,12 +74,13 @@ namespace Curso.EntityFrameWork
 
             // Atualizar o produto que já estava salvo
 
-            var banco = new LojaContext();
+            var banco = new ProdutoDAOEntity();
+            
+
             // usei o comando First() para retornar o 1º produto do banco
-            Produto primeiroProduto = banco.Produtos.First();
+            Produto primeiroProduto = banco.ExibirProdutos().First();
             primeiroProduto.Nome = "Capitão Ámerica - Soldado Invernal";
-            banco.Produtos.Update(primeiroProduto);
-            banco.SaveChanges();
+            banco.Atualizar(primeiroProduto);
             ExibirProdutos();
         }
     }
