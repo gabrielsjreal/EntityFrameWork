@@ -8,10 +8,13 @@ namespace Curso.EntityFrameWork
     {
         static void Main(string[] args)
         {
-            GravarUsandoEntity();
+            //GravarUsandoEntity();
             ExibirProdutos();
+            //ExcluirProdutos();
+           // ExibirProdutos();
         }
 
+        // método para inserir um produto no banco de dados
         private static void GravarUsandoEntity()
         {
             Produto p = new Produto();
@@ -25,17 +28,39 @@ namespace Curso.EntityFrameWork
                 contexto.SaveChanges();
             
         }
-
+        
+        //método para exibir os produtos que estão no banco de dados
         private static void ExibirProdutos()
         {
-            using (var banco = new LojaContext())
-            {
+            var banco = new LojaContext();
+
                 IList<Produto> produtos = banco.Produtos.ToList();
+
+            if (produtos.Count != 0)
+            {
+                Console.WriteLine("Tamnho da Lista: " + produtos.Count);
+
                 foreach (var item in produtos)
                 {
                     Console.WriteLine(item);
                 }
+            } else
+            {
+                Console.WriteLine("Lista Vazia: " + produtos.Count);
             }
+            
+        }
+
+        // método para excluir todos os elementos do banco de dados
+        private static void ExcluirProdutos()
+        {
+            var banco = new LojaContext();
+            IList<Produto> produtos = banco.Produtos.ToList();
+            foreach (var item in produtos)
+            {
+                banco.Produtos.Remove(item);
+            }
+            banco.SaveChanges();
         }
     }
 }
