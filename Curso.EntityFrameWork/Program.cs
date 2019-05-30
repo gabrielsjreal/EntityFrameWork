@@ -9,18 +9,19 @@ namespace Curso.EntityFrameWork
         static void Main(string[] args)
         {
             //GravarUsandoEntity();
-            ExibirProdutos();
+            //ExibirProdutos();
             //ExcluirProdutos();
-           // ExibirProdutos();
+            //ExibirProdutos();
+            AtualizarProduto();
         }
 
         // método para inserir um produto no banco de dados
         private static void GravarUsandoEntity()
         {
             Produto p = new Produto();
-            p.Nome = "Homem de Ferro";
+            p.Nome = "Vingadores - Utimato";
             p.Categoria = "Filmes";
-            p.Preco = 35.50;
+            p.Preco = 74.90;
 
             var contexto = new LojaContext();
             
@@ -38,7 +39,7 @@ namespace Curso.EntityFrameWork
 
             if (produtos.Count != 0)
             {
-                Console.WriteLine("Tamnho da Lista: " + produtos.Count);
+                Console.WriteLine("Quantidade de Produto no Banco de Dados: " + produtos.Count);
 
                 foreach (var item in produtos)
                 {
@@ -46,7 +47,7 @@ namespace Curso.EntityFrameWork
                 }
             } else
             {
-                Console.WriteLine("Lista Vazia: " + produtos.Count);
+                Console.WriteLine("Não há produtos cadastrados no banco de dados: " + produtos.Count);
             }
             
         }
@@ -61,6 +62,25 @@ namespace Curso.EntityFrameWork
                 banco.Produtos.Remove(item);
             }
             banco.SaveChanges();
+        }
+
+        //método para atualizar os elementos do banco de dados
+        private static void AtualizarProduto()
+        {
+            // Incluir um produto
+            GravarUsandoEntity();
+            ExibirProdutos();
+
+
+            // Atualizar o produto que já estava salvo
+
+            var banco = new LojaContext();
+            // usei o comando First() para retornar o 1º produto do banco
+            Produto primeiroProduto = banco.Produtos.First();
+            primeiroProduto.Nome = "Capitão Ámerica - Soldado Invernal";
+            banco.Produtos.Update(primeiroProduto);
+            banco.SaveChanges();
+            ExibirProdutos();
         }
     }
 }
