@@ -9,10 +9,58 @@ namespace Curso.EntityFrameWork
         static void Main(string[] args)
         {
             //GravarUsandoEntity();
-            //ExibirProdutos();
+            // ExibirProdutos();
             //ExcluirProdutos();
             //ExibirProdutos();
-            AtualizarProduto();
+            //AtualizarProduto();
+            //ComprarPaes();
+            Promocao();
+
+        }
+
+        private static void Promocao()
+        {
+            var p1 = new Produto() { Nome = "Suco de Laranja", Categoria = "Bebidas", PrecoUnitario = 8.0, Unidade = "Litros"};
+            var p2 = new Produto() { Nome = "Café", Categoria = "Bebidas", PrecoUnitario = 12.45, Unidade = "Gramas" };
+            var p3 = new Produto() { Nome = "Macarrão", Categoria = "Alimentos", PrecoUnitario = 4.23, Unidade = "Gramas" };
+
+            var promocaoPascoa = new Promocao();
+            promocaoPascoa.Descricao = "Páscoa Feliz";
+            promocaoPascoa.DataInicio = DateTime.Now;
+            promocaoPascoa.DataTermino = DateTime.Now.AddMonths(3);
+
+            promocaoPascoa.IncluiProduto(p1);
+            promocaoPascoa.IncluiProduto(p2);
+            promocaoPascoa.IncluiProduto(p3);
+
+            var contexto = new LojaContext();
+            contexto.Promocoes.Add(promocaoPascoa);
+            contexto.SaveChanges();
+
+
+
+        }
+
+        //Método para realização da compra de Pães 
+        private static void ComprarPaes()
+        {
+            var paoFrances = new Produto();
+            paoFrances.Id = 002;
+            paoFrances.Nome = "Pão Francês";
+            paoFrances.PrecoUnitario = 0.40;
+            paoFrances.Unidade = "Unidade";
+            paoFrances.Categoria = "Padaria";
+
+            var compra = new Compra();
+            compra.Quantidade = 6;
+            compra.Produto = paoFrances;
+            compra.Preco = paoFrances.PrecoUnitario * compra.Quantidade;
+
+            var contexto = new LojaContext();
+
+            contexto.Compras.Add(compra);
+            contexto.SaveChanges();
+
         }
 
         // método para inserir um produto no banco de dados
@@ -21,7 +69,7 @@ namespace Curso.EntityFrameWork
             Produto p = new Produto();
             p.Nome = "Vingadores - Utimato";
             p.Categoria = "Filmes";
-            p.Preco = 74.90;
+            p.PrecoUnitario = 74.90;
 
             var contexto = new ProdutoDAOEntity();
             

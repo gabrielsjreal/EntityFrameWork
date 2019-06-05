@@ -9,14 +9,16 @@ namespace Curso.EntityFrameWork
         public int Id { get;  set; }
         public string Nome { get;  set; }
         public string Categoria { get;  set; }
-        public double Preco { get;  set; }
+        public double PrecoUnitario { get;  set; }
+        public string Unidade { get; set; }
+        public IList<PromocaoProduto> Promocaos { get; set; }
 
         public override string ToString()
         {
             return "Id: " + Id + "\n"+
                     "Nome: " + Nome + "\n" +
                     "Categoria: " + Categoria + "\n" +
-                    "Preço: " + Preco  ;
+                    "Preço: " + PrecoUnitario  ;
         }
     }
 }
