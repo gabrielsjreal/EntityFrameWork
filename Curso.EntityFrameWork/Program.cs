@@ -14,10 +14,31 @@ namespace Curso.EntityFrameWork
             //ExibirProdutos();
             //AtualizarProduto();
             //ComprarPaes();
-            Promocao();
+            //Promocao();
+            clientes();
 
         }
 
+        //Método para relacionamento 1 para 1
+        private static void clientes()
+        {
+            var cliente = new Cliente();
+            cliente.Nome = "Cliente 1";
+            cliente.EnderecoDeEntrega = new Endereco()
+            {
+                Numero = 12,
+                Logradouro = "Rua dos Inválidos",
+                Complemento = "Sobrado",
+                Bairro = "Centro",
+                Cidade = "Cidade"
+            };
+
+            var contexto = new LojaContext();
+            contexto.Clientes.Add(cliente);
+            contexto.SaveChanges();
+        }
+
+        // nessa operação usei o relacionamento JOIN usando a classe "PromocaoProduto" - Muitos para Muitos - Relação do banco
         private static void Promocao()
         {
             var p1 = new Produto() { Nome = "Suco de Laranja", Categoria = "Bebidas", PrecoUnitario = 8.0, Unidade = "Litros"};
@@ -36,8 +57,6 @@ namespace Curso.EntityFrameWork
             var contexto = new LojaContext();
             contexto.Promocoes.Add(promocaoPascoa);
             contexto.SaveChanges();
-
-
 
         }
 
