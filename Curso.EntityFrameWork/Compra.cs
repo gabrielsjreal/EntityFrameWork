@@ -14,6 +14,11 @@ namespace Curso.EntityFrameWork
         public Produto Produto { get; set; }
         public double Preco { get; set; }
 
-      
+        public override string ToString()
+        {
+            return "Id: " + Id + ", Quantidade: " + Quantidade + 
+                ", Preço: " + Preco + "\n Produto: " + Produto;
+        }
+
     }
 }

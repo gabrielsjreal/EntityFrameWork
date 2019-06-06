@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,9 +16,69 @@ namespace Curso.EntityFrameWork
             //AtualizarProduto();
             //ComprarPaes();
             //Promocao();
-            clientes();
+            //clientes();
+            //IncluirPromocao
+
+            var contexto = new LojaContext();
+            var cliente = contexto
+                .Clientes
+                .Include(c => c.EnderecoDeEntrega)
+                .FirstOrDefault();
+            Console.WriteLine($"Endereço de Entrega: {cliente.EnderecoDeEntrega.Logradouro}");
+
+            var produto = contexto
+                .Produtos
+                //.Include(p => p.Compras)
+                .Where(p => p.Id == 2002)
+                .FirstOrDefault();
+
+            contexto.Entry(produto)
+                .Collection(p => p.Compras)
+                .Query()
+                .Where(c => c.Preco > 10)
+                .Load();
+
+            foreach (var item in produto.Compras)
+            {
+                Console.WriteLine(item);
+            }
+        }
+
+        //método com comando para o JOIN
+        private static void incluirpromocao()
+        {
+            var contexto = new LojaContext();
+            var promocao = new Promocao();
+            promocao.Descricao = "Queima total - Janeiro";
+            promocao.DataInicio = new DateTime(2018, 1, 1);
+            promocao.DataTermino = new DateTime(2018, 1, 31);
+
+            var produtos = contexto.Produtos
+                .Where(p => p.Categoria == "Bebidas")
+                .ToList();
+
+            foreach (var item in produtos)
+            {
+                promocao.IncluiProduto(item);
+            }
+
+            contexto.Promocoes.Add(promocao);
+            contexto.SaveChanges();
+
+            // comando abaixo são para exibir os dados da promoção - usando JOIN
+            var contexto2 = new LojaContext();
+            var promocao2 = contexto2
+                .Promocoes
+                .Include(p => p.Produtos)
+                .ThenInclude(pp => pp.Produto)
+                .FirstOrDefault();
+            foreach (var item in promocao2.Produtos)
+            {
+                Console.WriteLine(item.Produto);
+            }
 
         }
+
 
         //Método para relacionamento 1 para 1
         private static void clientes()

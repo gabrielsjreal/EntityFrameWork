@@ -12,6 +12,7 @@ namespace Curso.EntityFrameWork
         public double PrecoUnitario { get;  set; }
         public string Unidade { get; set; }
         public IList<PromocaoProduto> Promocaos { get; set; }
+        public IList<Compra> Compras { get; set; }
 
         public override string ToString()
         {
